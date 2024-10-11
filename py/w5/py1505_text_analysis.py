@@ -29,3 +29,58 @@
 # --‐---‐-‐‐-‐-‐----‐--‐‐--‐‐‐--‐‐-‐-‐-‐-‐-‐--‐‐‐‐‐----‐‐-‐-‐-‐-‐-‐--‐‐---‐‐--‐‐-‐‐‐‐-‐-‐--‐-‐‐‐-‐‐
 
 
+# import string
+
+
+def simplifyWord(w=''):
+    # return w.translate(w.maketrans('', '', string.punctuation)).lower()
+    return w.translate(w.maketrans('', '', '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~')).lower() # repr(string.punctuation)
+
+
+def countTextWords(file_name='default'):
+    map_pi = dict()
+    try:
+        file_name = str(file_name)
+        with open(file_name, "r") as text:
+            for current_line in text:
+                if current_line != "\n":
+                    line_words = current_line.split()
+                    for current_word in line_words:
+                        current_word = simplifyWord(current_word)
+                        if current_word not in map_pi:
+                            map_pi[current_word] = 1
+                        else:
+                            map_pi[current_word] += 1
+        return map_pi
+    except:
+        print(f'FileNotFoundError: {file_name} not found')
+
+
+def mostFrequent(dict_map=dict(), k=0):
+    try:
+        if (isinstance(k, int) and k >= 0):
+            dict_map = dict(dict_map)
+            list_l = [(value, key) 
+                for key, value in dict_map.items() 
+                if isinstance(value, int)]
+            list_l.sort(key=lambda x: x[0])
+            if len(list_l) >= k:
+                tuple_yx_star = list_l[-k]
+            list_l = [tuple_yx 
+                      for tuple_yx in list_l 
+                      if tuple_yx[0] >= tuple_yx_star[0]]
+            map_tau = dict()
+            for i in list_l:
+                map_tau[i[1]] = i[0]
+            return map_tau
+    except:
+        print('Error in mostFrequent')
+
+
+def twentyFrequent(file_name_main='default'):
+    return mostFrequent(countTextWords(file_name_main), 20)
+
+
+if __name__ == '__main__':
+    print(twentyFrequent('text-ironic.txt'))
+    print(twentyFrequent('text-robinson-crusoe.txt'))
