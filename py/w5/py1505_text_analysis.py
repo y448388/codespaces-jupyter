@@ -34,7 +34,9 @@
 
 def simplifyWord(w=''):
     # return w.translate(w.maketrans('', '', string.punctuation)).lower()
-    return w.translate(w.maketrans('', '', '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~')).lower() # repr(string.punctuation)
+    simplify_w = w.translate(w.maketrans('', '', '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~')).lower() # repr(string.punctuation)
+    if simplify_w != '':
+        return simplify_w 
 
 
 def countTextWords(file_name='default'):
@@ -47,9 +49,9 @@ def countTextWords(file_name='default'):
                     line_words = current_line.split()
                     for current_word in line_words:
                         current_word = simplifyWord(current_word)
-                        if current_word not in map_pi:
+                        if current_word != None and current_word not in map_pi:
                             map_pi[current_word] = 1
-                        else:
+                        elif current_word in map_pi:
                             map_pi[current_word] += 1
         return map_pi
     except:
@@ -84,3 +86,4 @@ def twentyFrequent(file_name_main='default'):
 if __name__ == '__main__':
     print(twentyFrequent('text-ironic.txt'))
     print(twentyFrequent('text-robinson-crusoe.txt'))
+    print(countTextWords('text-robinson-crusoe.txt'))
